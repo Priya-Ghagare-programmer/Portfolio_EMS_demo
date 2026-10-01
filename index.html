@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee Management System | Product Portfolio</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+:root{
+    --bg:#060913;
+    --surface:#0d1320;
+    --surface2:#111a2a;
+    --border:rgba(255,255,255,.09);
+    --text:#f6f8fc;
+    --muted:#9ba7ba;
+    --primary:#6c63ff;
+    --cyan:#00d4ff;
+    --green:#39e58c;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    overflow-x:hidden;
+}
+.navbar{
+    background:rgba(6,9,19,.82);backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--border);
+}
+.navbar-brand{font-weight:800;color:#fff!important}
+.brand-dot{color:var(--cyan)}
+.nav-link{color:#aeb8c8!important;margin-left:18px;transition:.25s}
+.nav-link:hover{color:#fff!important}
+.hero{
+    min-height:92vh;display:flex;align-items:center;padding:120px 0 80px;
+    position:relative;overflow:hidden;
+}
+.hero:before,.hero:after{
+    content:"";position:absolute;border-radius:50%;filter:blur(100px);z-index:-1;
+}
+.hero:before{width:500px;height:500px;background:#5a50ff;opacity:.16;left:-180px;top:100px}
+.hero:after{width:450px;height:450px;background:#00d4ff;opacity:.09;right:-150px;bottom:0}
+.eyebrow{
+    display:inline-flex;gap:9px;align-items:center;padding:8px 14px;
+    border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.035);
+    color:#c5cede;font-size:13px
+}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 14px var(--green)}
+.hero h1{font-size:clamp(48px,7vw,88px);line-height:.98;letter-spacing:-4px;font-weight:850;margin-top:24px}
+.gradient-text{background:linear-gradient(90deg,#fff,#8d86ff,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-copy{max-width:680px;color:var(--muted);font-size:18px;line-height:1.8;margin:26px 0}
+.btn-main{
+    background:linear-gradient(135deg,var(--primary),#827aff);border:0;color:#fff;
+    border-radius:11px;padding:13px 23px;font-weight:700;transition:.3s;
+    box-shadow:0 12px 30px rgba(108,99,255,.2)
+}
+.btn-main:hover{color:#fff;transform:translateY(-3px);box-shadow:0 18px 35px rgba(108,99,255,.3)}
+.btn-soft{
+    color:#fff;border:1px solid var(--border);background:rgba(255,255,255,.035);
+    border-radius:11px;padding:13px 23px;font-weight:650;transition:.3s
+}
+.btn-soft:hover{color:#fff;background:rgba(255,255,255,.08);transform:translateY(-3px)}
+.product-window{
+    background:#0a0f1a;border:1px solid var(--border);border-radius:22px;
+    box-shadow:0 35px 90px rgba(0,0,0,.45);overflow:hidden;animation:float 5s ease-in-out infinite
+}
+@keyframes float{50%{transform:translateY(-9px)}}
+.window-bar{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;gap:7px}
+.dot{width:10px;height:10px;border-radius:50%;background:#4b5565}
+.dashboard-preview{padding:20px}
+.mini-sidebar{background:#0d1421;border:1px solid var(--border);border-radius:13px;padding:13px;height:100%}
+.mini-logo{font-weight:800;font-size:14px;margin-bottom:20px}
+.mini-menu{padding:9px 8px;border-radius:8px;color:#8995a8;font-size:12px;margin-bottom:5px}
+.mini-menu.active{background:rgba(108,99,255,.16);color:#fff}
+.mini-main{background:#0d1421;border:1px solid var(--border);border-radius:13px;padding:15px}
+.mini-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
+.mini-title{font-weight:750;font-size:16px}
+.avatar{width:29px;height:29px;border-radius:50%;background:linear-gradient(135deg,#6c63ff,#00d4ff);display:grid;place-items:center;font-size:11px;font-weight:800}
+.mini-stat{
+    border:1px solid var(--border);background:rgba(255,255,255,.025);
+    border-radius:10px;padding:12px
+}
+.mini-stat small{color:#8d98aa;font-size:10px}
+.mini-stat strong{display:block;margin-top:4px;font-size:18px}
+.chart{
+    height:105px;margin-top:13px;border-radius:10px;
+    background:linear-gradient(to bottom,rgba(108,99,255,.12),transparent);
+    border:1px solid var(--border);position:relative;overflow:hidden
+}
+.chart svg{width:100%;height:100%}
+.activity{font-size:11px;color:#9ca8b9;margin-top:12px}
+.stats{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,.012)}
+.stat-box{padding:30px 15px;text-align:center;border-right:1px solid var(--border)}
+.stat-box:last-child{border-right:0}
+.stat-number{font-size:30px;font-weight:850}.stat-label{font-size:13px;color:var(--muted);margin-top:4px}
+section{padding:105px 0}
+.section-label{color:var(--cyan);font-size:12px;text-transform:uppercase;letter-spacing:2px;font-weight:800}
+.section-title{font-size:clamp(34px,5vw,55px);letter-spacing:-2.5px;font-weight:850;margin-top:10px}
+.section-copy{color:var(--muted);line-height:1.8;max-width:700px}
+.value-card,.modern-card{
+    height:100%;background:rgba(255,255,255,.035);border:1px solid var(--border);
+    border-radius:20px;padding:28px;transition:.35s
+}
+.value-card:hover,.modern-card:hover{transform:translateY(-7px);border-color:rgba(108,99,255,.4);box-shadow:0 20px 55px rgba(0,0,0,.25)}
+.icon-box{
+    width:52px;height:52px;border-radius:15px;display:grid;place-items:center;
+    background:rgba(108,99,255,.13);color:#938dff;font-size:23px;margin-bottom:20px
+}
+.value-card h4,.modern-card h4{font-size:19px;font-weight:750}
+.value-card p,.modern-card p{color:var(--muted);line-height:1.7;font-size:14px}
+.features-section{background:var(--surface)}
+/* FLIP CARDS */
+.flip-card{height:315px;perspective:1200px}
+.flip-inner{
+    position:relative;width:100%;height:100%;transition:transform .75s cubic-bezier(.2,.7,.2,1);
+    transform-style:preserve-3d
+}
+.flip-card:hover .flip-inner,.flip-card:focus-within .flip-inner{transform:rotateY(180deg)}
+.flip-face{
+    position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border:1px solid var(--border);border-radius:20px;padding:27px;
+    background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
+    overflow:hidden
+}
+.flip-face:after{
+    content:"";position:absolute;width:160px;height:160px;border-radius:50%;
+    background:#6c63ff;filter:blur(75px);opacity:.08;right:-70px;bottom:-70px
+}
+.flip-back{transform:rotateY(180deg);background:linear-gradient(145deg,#11192a,#0b111d)}
+.flip-back ul{padding-left:18px;color:#b2bdcc;line-height:2;font-size:14px}
+.flip-hint{font-size:11px;color:#707c8f;margin-top:20px;text-transform:uppercase;letter-spacing:1px}
+.dashboard-card{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:20px}
+.metric{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:18px}
+.metric small{color:var(--muted)}.metric strong{font-size:27px;display:block;margin-top:5px}
+.progress-line{height:7px;background:#1c2534;border-radius:20px;overflow:hidden;margin-top:12px}
+.progress-line span{display:block;height:100%;width:72%;background:linear-gradient(90deg,var(--primary),var(--cyan));border-radius:20px}
+.flow-step{
+    position:relative;text-align:center;padding:25px 15px;border:1px solid var(--border);
+    border-radius:17px;background:rgba(255,255,255,.025);height:100%
+}
+.flow-number{
+    width:36px;height:36px;border-radius:50%;display:grid;place-items:center;margin:0 auto 13px;
+    background:rgba(108,99,255,.15);color:#a19cff;font-weight:800
+}
+.tech{
+    display:flex;align-items:center;gap:14px;padding:17px 18px;border:1px solid var(--border);
+    border-radius:13px;background:rgba(255,255,255,.025);transition:.3s
+}
+.tech:hover{transform:translateY(-3px);background:rgba(255,255,255,.06)}
+.tech i{font-size:23px;color:var(--cyan)}
+.architecture{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:35px}
+.arch-box{height:100%;text-align:center;padding:25px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.025)}
+.arch-box i{font-size:30px;color:var(--cyan)}
+.terminal{background:#05080e;border:1px solid var(--border);border-radius:17px;overflow:hidden}
+.terminal-head{padding:12px 17px;border-bottom:1px solid var(--border);color:#768297;font-size:12px}
+.terminal-body{padding:23px;font:14px/2 monospace;color:#c5cfdd}.method{color:#50fa7b}
+.cta{
+    text-align:center;padding:75px 25px;border:1px solid var(--border);border-radius:26px;
+    background:linear-gradient(135deg,rgba(108,99,255,.17),rgba(0,212,255,.06))
+}
+footer{padding:35px 0;border-top:1px solid var(--border);color:var(--muted)}
+.social{color:var(--muted);font-size:19px;margin-left:15px;transition:.2s}.social:hover{color:#fff}
+.reveal{opacity:0;transform:translateY(25px);transition:opacity .7s ease,transform .7s ease}
+.reveal.show{opacity:1;transform:none}
+
+/* =========================================================
+   PROFESSIONAL MOTION SYSTEM
+   ========================================================= */
+:root{--ease-pro:cubic-bezier(.22,1,.36,1)}
+
+body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;opacity:.18;
+    background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:55px 55px;
+    mask-image:linear-gradient(to bottom,#000,transparent 82%);
+}
+
+.navbar{animation:navEnter .7s var(--ease-pro) both}
+@keyframes navEnter{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:none}}
+
+.hero .eyebrow{animation:fadeDown .7s var(--ease-pro) both}
+.hero h1{animation:heroTitle .9s .08s var(--ease-pro) both}
+.hero-copy{animation:fadeUp .8s .2s var(--ease-pro) both}
+.hero .btn-main,.hero .btn-soft{animation:fadeUp .7s .32s var(--ease-pro) both}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:none}}
+@keyframes heroTitle{from{opacity:0;transform:translateY(28px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+.product-window{
+    animation:productFloat 6s ease-in-out infinite;
+    will-change:transform;
+}
+@keyframes productFloat{
+    0%,100%{transform:translateY(0) rotateX(0)}
+    50%{transform:translateY(-10px) rotateX(.6deg)}
+}
+
+.chart polyline{
+    stroke-dasharray:700;stroke-dashoffset:700;
+    animation:drawChart 1.8s .55s var(--ease-pro) forwards;
+}
+@keyframes drawChart{to{stroke-dashoffset:0}}
+
+.avatar{position:relative}
+.avatar::after{
+    content:"";position:absolute;width:7px;height:7px;right:-1px;bottom:-1px;
+    border-radius:50%;background:var(--green);
+    box-shadow:0 0 0 3px #0d1421,0 0 10px var(--green);
+    animation:statusPulse 2s ease-in-out infinite;
+}
+@keyframes statusPulse{50%{transform:scale(1.18);opacity:.7}}
+
+.reveal{
+    opacity:0;transform:translate3d(0,32px,0) scale(.985);filter:blur(2px);
+    transition:opacity .8s var(--ease-pro),transform .8s var(--ease-pro),filter .8s var(--ease-pro);
+}
+.reveal.show{opacity:1;transform:none;filter:none}
+
+.reveal.show .value-card,.reveal.show .tech,.reveal.show .flow-step,.reveal.show .flip-card{
+    animation:cardEntrance .65s var(--ease-pro) both;
+}
+@keyframes cardEntrance{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+
+.value-card,.modern-card,.tech,.flow-step,.arch-box{position:relative;overflow:hidden}
+.value-card::before,.modern-card::before,.tech::before,.flow-step::before,.arch-box::before{
+    content:"";position:absolute;top:0;left:-120%;width:70%;height:100%;
+    background:linear-gradient(105deg,transparent,rgba(255,255,255,.055),transparent);
+    transform:skewX(-18deg);transition:left .8s var(--ease-pro);pointer-events:none;
+}
+.value-card:hover::before,.modern-card:hover::before,.tech:hover::before,
+.flow-step:hover::before,.arch-box:hover::before{left:140%}
+
+.icon-box{transition:transform .4s var(--ease-pro),background .4s ease,box-shadow .4s ease}
+.value-card:hover .icon-box,.modern-card:hover .icon-box{
+    transform:translateY(-3px) rotate(-4deg) scale(1.06);
+    box-shadow:0 10px 25px rgba(108,99,255,.15);
+}
+
+.flip-card{transition:transform .35s var(--ease-pro)}
+.flip-card:hover{transform:translateY(-5px)}
+.flip-inner{transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.flip-card:hover .flip-face{box-shadow:0 25px 65px rgba(0,0,0,.25)}
+.flip-card:focus-visible{outline:2px solid var(--cyan);outline-offset:5px;border-radius:20px}
+
+.flow-step{
+    transition:transform .35s var(--ease-pro),border-color .35s ease,box-shadow .35s ease;
+}
+.flow-step:hover{transform:translateY(-6px);border-color:rgba(0,212,255,.28);box-shadow:0 18px 45px rgba(0,0,0,.2)}
+.flow-number{transition:transform .4s var(--ease-pro),box-shadow .4s ease}
+.flow-step:hover .flow-number{transform:scale(1.1);box-shadow:0 0 25px rgba(108,99,255,.2)}
+
+.tech i{transition:transform .35s var(--ease-pro)}
+.tech:hover i{transform:scale(1.15) rotate(-5deg)}
+
+.architecture{position:relative}
+.architecture::after{
+    content:"";position:absolute;left:12%;right:12%;bottom:22px;height:1px;
+    background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+    opacity:.22;animation:connectionGlow 3s ease-in-out infinite;
+}
+@keyframes connectionGlow{50%{opacity:.65;transform:scaleX(1.03)}}
+
+.terminal-body::after{
+    content:"▋";color:var(--cyan);margin-left:5px;
+    animation:cursorBlink 1s steps(1) infinite;
+}
+@keyframes cursorBlink{50%{opacity:0}}
+
+.cta{position:relative;overflow:hidden}
+.cta::before{
+    content:"";position:absolute;width:280px;height:280px;left:50%;top:50%;
+    transform:translate(-50%,-50%);
+    background:radial-gradient(circle,rgba(108,99,255,.13),transparent 68%);
+    animation:ctaGlow 4s ease-in-out infinite;pointer-events:none;
+}
+.cta>*{position:relative;z-index:1}
+@keyframes ctaGlow{50%{transform:translate(-50%,-50%) scale(1.2);opacity:.7}}
+
+.btn-main,.btn-soft{position:relative;overflow:hidden}
+.btn-main::after,.btn-soft::after{
+    content:"";position:absolute;top:0;left:-120%;width:70%;height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.18),transparent);
+    transform:skewX(-20deg);transition:left .7s var(--ease-pro);
+}
+.btn-main:hover::after,.btn-soft:hover::after{left:140%}
+
+.social{display:inline-block;transition:transform .3s var(--ease-pro),color .25s ease}
+.social:hover{transform:translateY(-4px) scale(1.08)}
+
+@media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{
+        animation-duration:.001ms!important;animation-iteration-count:1!important;
+        scroll-behavior:auto!important;transition-duration:.001ms!important;
+    }
+    .reveal{opacity:1!important;transform:none!important;filter:none!important}
+}
+
+@media(max-width:767px){
+    .hero{padding-top:115px}.hero h1{letter-spacing:-2px}
+    .product-window{margin-top:25px}
+    section{padding:75px 0}
+    .stat-box{border-right:0;border-bottom:1px solid var(--border)}
+    .stat-box:last-child{border-bottom:0}
+    .flip-card{height:330px}
+}
+@media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}.product-window,.reveal,.flip-inner{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg fixed-top">
+<div class="container">
+<a class="navbar-brand" href="#">EMS<span class="brand-dot">.</span></a>
+<button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="nav">
+<ul class="navbar-nav ms-auto">
+<li class="nav-item"><a class="nav-link" href="#solution">Solution</a></li>
+<li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+<li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
+<li class="nav-item"><a class="nav-link" href="#technology">Technology</a></li>
+</ul>
+</div>
+</div>
+</nav>
+
+<section class="hero">
+<div class="container">
+<div class="row align-items-center g-5">
+<div class="col-lg-7 reveal">
+<div class="eyebrow"><span class="status-dot"></span> Full-Stack Business Application</div>
+<h1>Manage your workforce with a <span class="gradient-text">smarter experience.</span></h1>
+<p class="hero-copy">
+A modern Employee Management System designed to simplify HR operations,
+centralize employee information, and give administrators and employees
+a clear, efficient digital workspace.
+</p>
+<div class="d-flex flex-wrap gap-3">
+<a href="#solution" class="btn btn-main">Explore Solution <i class="bi bi-arrow-down ms-2"></i></a>
+<a href="#features" class="btn btn-soft">View Features</a>
+</div>
+</div>
+
+<div class="col-lg-5 reveal">
+<div class="product-window">
+<div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+<div class="dashboard-preview">
+<div class="row g-2">
+<div class="col-3">
+<div class="mini-sidebar">
+<div class="mini-logo">EMS.</div>
+<div class="mini-menu active"><i class="bi bi-grid me-1"></i> Home</div>
+<div class="mini-menu"><i class="bi bi-people me-1"></i> Staff</div>
+<div class="mini-menu"><i class="bi bi-building me-1"></i> Dept.</div>
+<div class="mini-menu"><i class="bi bi-calendar me-1"></i> Leave</div>
+<div class="mini-menu"><i class="bi bi-bell me-1"></i> Alerts</div>
+</div>
+</div>
+<div class="col-9">
+<div class="mini-main">
+<div class="mini-top"><span class="mini-title">Admin Dashboard</span><span class="avatar">AD</span></div>
+<div class="row g-2">
+<div class="col-6"><div class="mini-stat"><small>Employees</small><strong>124</strong></div></div>
+<div class="col-6"><div class="mini-stat"><small>Departments</small><strong>08</strong></div></div>
+<div class="col-6"><div class="mini-stat"><small>Pending Leave</small><strong>12</strong></div></div>
+<div class="col-6"><div class="mini-stat"><small>Notifications</small><strong>06</strong></div></div>
+</div>
+<div class="chart">
+<svg viewBox="0 0 400 130" preserveAspectRatio="none">
+<polyline points="0,105 45,92 85,98 130,66 175,74 215,42 260,57 305,25 350,43 400,15"
+fill="none" stroke="#7d75ff" stroke-width="4"/>
+</svg>
+</div>
+<div class="activity"><i class="bi bi-check-circle-fill text-info me-1"></i> Employee records synchronized successfully</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<div class="stats">
+<div class="container"><div class="row">
+<div class="col-md-3 col-6 stat-box"><div class="stat-number">01</div><div class="stat-label">Complete Solution</div></div>
+<div class="col-md-3 col-6 stat-box"><div class="stat-number">02</div><div class="stat-label">User Portals</div></div>
+<div class="col-md-3 col-6 stat-box"><div class="stat-number">06+</div><div class="stat-label">Core Modules</div></div>
+<div class="col-md-3 col-6 stat-box"><div class="stat-number">REST</div><div class="stat-label">API Architecture</div></div>
+</div></div>
+</div>
+
+<section id="solution">
+<div class="container">
+<div class="row align-items-center g-5">
+<div class="col-lg-6 reveal">
+<div class="section-label">01 — Business Value</div>
+<h2 class="section-title">Less admin work. Better visibility.</h2>
+<p class="section-copy mt-4">
+The platform brings employee records, departments, leave requests,
+notifications and salary information into one organized workspace.
+The goal is simple: make everyday employee operations easier to manage.
+</p>
+</div>
+<div class="col-lg-6 reveal">
+<div class="row g-3">
+<div class="col-sm-6"><div class="value-card"><div class="icon-box"><i class="bi bi-folder2-open"></i></div><h4>Centralized Data</h4><p>Keep employee and department information organized in one system.</p></div></div>
+<div class="col-sm-6"><div class="value-card"><div class="icon-box"><i class="bi bi-lightning-charge"></i></div><h4>Faster Workflows</h4><p>Reduce repetitive administration with focused digital workflows.</p></div></div>
+<div class="col-sm-6"><div class="value-card"><div class="icon-box"><i class="bi bi-bar-chart"></i></div><h4>Clear Visibility</h4><p>Dashboard-style views make important information easier to access.</p></div></div>
+<div class="col-sm-6"><div class="value-card"><div class="icon-box"><i class="bi bi-phone"></i></div><h4>Responsive UI</h4><p>A clean interface designed for desktop, tablet and mobile screens.</p></div></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="features" class="features-section">
+<div class="container">
+<div class="mb-5 reveal">
+<div class="section-label">02 — Powerful Features</div>
+<h2 class="section-title">Explore the product modules.</h2>
+<p class="section-copy mt-3">Hover over a card to see what each module delivers.</p>
+</div>
+
+<div class="row g-4">
+<!-- six flip cards -->
+<div class="col-md-6 col-lg-4 reveal">
+<div class="flip-card" tabindex="0"><div class="flip-inner">
+<div class="flip-face">
+<div class="icon-box"><i class="bi bi-people"></i></div><h4>Employee Management</h4>
+<p>Add, update, search and manage employee records from a centralized workspace.</p>
+<div class="flip-hint">Hover to explore <i class="bi bi-arrow-right"></i></div>
+</div>
+<div class="flip-face flip-back">
+<h4>Employee Management</h4>
+<ul><li>Employee registration</li><li>Search and update records</li><li>Department assignment</li><li>Profile and contact details</li></ul>
+</div>
+</div></div>
+</div>
+
+<div class="col-md-6 col-lg-4 reveal">
+<div class="flip-card" tabindex="0"><div class="flip-inner">
+<div class="flip-face">
+<div class="icon-box"><i class="bi bi-building"></i></div><h4>Department Management</h4>
+<p>Create and maintain departments, managers, locations and department status.</p>
+<div class="flip-hint">Hover to explore <i class="bi bi-arrow-right"></i></div>
+</div>
+<div class="flip-face flip-back">
+<h4>Department Management</h4>
+<ul><li>Create departments</li><li>Assign managers</li><li>Manage locations</li><li>Update department status</li></ul>
+</div>
+</div></div>
+</div>
+
+<div class="col-md-6 col-lg-4 reveal">
+<div class="flip-card" tabindex="0"><div class="flip-inner">
+<div class="flip-face">
+<div class="icon-box"><i class="bi bi-calendar-check"></i></div><h4>Leave Management</h4>
+<p>Employees submit requests while administrators review and process them.</p>
+<div class="flip-hint">Hover to explore <i class="bi bi-arrow-right"></i></div>
+</div>
+<div class="flip-face flip-back">
+<h4>Leave Management</h4>
+<ul><li>Submit leave requests</li><li>Review pending requests</li><li>Approve or reject</li><li>Employee leave history</li></ul>
+</div>
+</div></div>
+</div>
+
+<div class="col-md-6 col-lg-4 reveal">
+<div class="flip-card" tabindex="0"><div class="flip-inner">
+<div class="flip-face">
+<div class="icon-box"><i class="bi bi-bell"></i></div><h4>Notifications</h4>
+<p>Keep employees informed with a simple notification workflow.</p>
+<div class="flip-hint">Hover to explore <i class="bi bi-arrow-right"></i></div>
+</div>
+<div class="flip-face flip-back">
+<h4>Notifications</h4>
+<ul><li>Admin-to-employee messages</li><li>Notification list</li><li>Read status</li><li>Dashboard alerts</li></ul>
+</div>
+</div></div>
+</div>
+
+<div class="col-md-6 col-lg-4 reveal">
+<div class="flip-card" tabindex="0"><div class="flip-inner">
+<div class="flip-face">
+<div class="icon-box"><i class="bi bi-cash-stack"></i></div><h4>Salary & Profile</h4>
+<p>Employees can access personal information and salary details from their portal.</p>
+<div class="flip-hint">Hover to explore <i class="bi bi-arrow-right"></i></div>
+</div>
+<div class="flip-face flip-back">
+<h4>Employee Portal</h4>
+<ul><li>Profile information</li><li>Salary information</li><li>Employee dashboard</li><li>Personalized access</li></ul>
+</div>
+</div></div>
+</div>
+
+<div class="col-md-6 col-lg-4 reveal">
+<div class="flip-card" tabindex="0"><div class="flip-inner">
+<div class="flip-face">
+<div class="icon-box"><i class="bi bi-shield-lock"></i></div><h4>Secure Access</h4>
+<p>Separate administrator and employee workflows with protected application access.</p>
+<div class="flip-hint">Hover to explore <i class="bi bi-arrow-right"></i></div>
+</div>
+<div class="flip-face flip-back">
+<h4>Authentication</h4>
+<ul><li>Admin login</li><li>Employee login</li><li>Spring Security</li><li>JWT-based authentication</li></ul>
+</div>
+</div></div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="experience">
+<div class="container">
+<div class="row align-items-center g-5">
+<div class="col-lg-5 reveal">
+<div class="section-label">03 — User Experience</div>
+<h2 class="section-title">Two portals. Clear workflows.</h2>
+<p class="section-copy mt-4">The interface separates administrative responsibilities from employee self-service so each user sees the actions relevant to them.</p>
+</div>
+<div class="col-lg-7 reveal">
+<div class="dashboard-card">
+<div class="row g-3">
+<div class="col-sm-6"><div class="metric"><small>Admin Workspace</small><strong>Control</strong><div class="progress-line"><span style="width:88%"></span></div></div></div>
+<div class="col-sm-6"><div class="metric"><small>Employee Portal</small><strong>Self-Service</strong><div class="progress-line"><span style="width:76%"></span></div></div></div>
+</div>
+<div class="row g-3 mt-1">
+<div class="col-md-6"><h6 class="mt-3">Admin flow</h6><p class="section-copy small">Login → Dashboard → Employees → Departments → Leave → Notifications</p></div>
+<div class="col-md-6"><h6 class="mt-3">Employee flow</h6><p class="section-copy small">Login → Profile → Leave → Notifications → Salary</p></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="row g-3 mt-5">
+<div class="col-md-3 reveal"><div class="flow-step"><div class="flow-number">1</div><h6>Login</h6><p class="section-copy small mx-auto">Access the correct portal.</p></div></div>
+<div class="col-md-3 reveal"><div class="flow-step"><div class="flow-number">2</div><h6>Dashboard</h6><p class="section-copy small mx-auto">See important information quickly.</p></div></div>
+<div class="col-md-3 reveal"><div class="flow-step"><div class="flow-number">3</div><h6>Take Action</h6><p class="section-copy small mx-auto">Manage records or submit requests.</p></div></div>
+<div class="col-md-3 reveal"><div class="flow-step"><div class="flow-number">4</div><h6>Track Status</h6><p class="section-copy small mx-auto">Stay updated through notifications.</p></div></div>
+</div>
+</div>
+</section>
+
+<section id="technology">
+<div class="container">
+<div class="mb-5 reveal">
+<div class="section-label">04 — Technology</div>
+<h2 class="section-title">Built with a modern full-stack.</h2>
+<p class="section-copy mt-3">The portfolio page uses static demo data. No database connection is required for this HTML presentation.</p>
+</div>
+<div class="row g-3">
+<div class="col-md-6 col-lg-4"><div class="tech"><i class="bi bi-filetype-jsx"></i><span>React.js</span></div></div>
+<div class="col-md-6 col-lg-4"><div class="tech"><i class="bi bi-bootstrap"></i><span>Bootstrap 5</span></div></div>
+<div class="col-md-6 col-lg-4"><div class="tech"><i class="bi bi-filetype-css"></i><span>CSS3</span></div></div>
+<div class="col-md-6 col-lg-4"><div class="tech"><i class="bi bi-braces"></i><span>Spring Boot</span></div></div>
+<div class="col-md-6 col-lg-4"><div class="tech"><i class="bi bi-shield-check"></i><span>Spring Security / JWT</span></div></div>
+<div class="col-md-6 col-lg-4"><div class="tech"><i class="bi bi-database"></i><span>MySQL</span></div></div>
+<div class="col-md-6 col-lg-4"><div class="tech"><i class="bi bi-send"></i><span>Axios</span></div></div>
+<div class="col-md-6 col-lg-4"><div class="tech"><i class="bi bi-diagram-3"></i><span>REST APIs</span></div></div>
+<div class="col-md-6 col-lg-4"><div class="tech"><i class="bi bi-git"></i><span>Git</span></div></div>
+</div>
+</div>
+</section>
+
+<section id="architecture">
+<div class="container">
+<div class="mb-5 reveal">
+<div class="section-label">05 — Architecture</div>
+<h2 class="section-title">From interface to data.</h2>
+<p class="section-copy mt-3">A layered architecture connects the React frontend, Spring Boot backend and MySQL database.</p>
+</div>
+<div class="architecture reveal">
+<div class="row g-4">
+<div class="col-md-4"><div class="arch-box"><i class="bi bi-window-stack"></i><h5 class="mt-3">React Frontend</h5><p class="section-copy mx-auto">Components, routing, forms, dashboards and API integration.</p></div></div>
+<div class="col-md-4"><div class="arch-box"><i class="bi bi-hdd-network"></i><h5 class="mt-3">Spring Boot API</h5><p class="section-copy mx-auto">Controllers, services, repositories, business logic and security.</p></div></div>
+<div class="col-md-4"><div class="arch-box"><i class="bi bi-database-fill"></i><h5 class="mt-3">MySQL Database</h5><p class="section-copy mx-auto">Employee, department, leave and notification information.</p></div></div>
+</div>
+<div class="text-center mt-4 text-secondary">React <i class="bi bi-arrow-right mx-2"></i> REST API <i class="bi bi-arrow-right mx-2"></i> Spring Boot <i class="bi bi-arrow-right mx-2"></i> MySQL</div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="container">
+<div class="row align-items-center g-5">
+<div class="col-lg-5 reveal">
+<div class="section-label">06 — API Layer</div>
+<h2 class="section-title">REST APIs power the workflows.</h2>
+<p class="section-copy mt-4">The React frontend communicates with Spring Boot through REST endpoints using Axios.</p>
+</div>
+<div class="col-lg-7 reveal">
+<div class="terminal">
+<div class="terminal-head">employee-management-api</div>
+<div class="terminal-body">
+<div><span class="method">GET</span> /getallemp</div>
+<div><span class="method">GET</span> /getemp?empid=1</div>
+<div><span class="method">POST</span> /addE</div>
+<div><span class="method">PUT</span> /updateemp</div>
+<div><span class="method">DELETE</span> /deleteemp</div>
+<div><span class="method">POST</span> /login</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="container">
+<div class="cta reveal">
+<div class="section-label">Client-Facing Project Showcase</div>
+<h2 class="section-title mt-2">Build a better digital workflow.</h2>
+<p class="section-copy mx-auto mt-3">This portfolio demonstrates how a business requirement can be translated into a responsive UI, structured backend, secure access and connected data workflows.</p>
+<div class="d-flex justify-content-center gap-3 flex-wrap mt-4">
+<a href="#features" class="btn btn-main">Explore Features</a>
+<a href="#technology" class="btn btn-soft">View Tech Stack</a>
+</div>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="container">
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+<div>© 2026 Employee Management System Portfolio</div>
+<div>
+<a href="#" class="social"><i class="bi bi-github"></i></a>
+<a href="#" class="social"><i class="bi bi-linkedin"></i></a>
+<a href="#" class="social"><i class="bi bi-envelope"></i></a>
+</div>
+</div>
+</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+            if(entry.isIntersecting){
+                entry.target.classList.add("show");
+                observer.unobserve(entry.target);
+            }
+        });
+    },{threshold:.12,rootMargin:"0px 0px -40px 0px"});
+    document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+} else {
+    document.querySelectorAll(".reveal").forEach(el=>el.classList.add("show"));
+}
+</script>
+</body>
+</html>
